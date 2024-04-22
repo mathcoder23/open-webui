@@ -161,9 +161,7 @@ async def speech(request: Request, user=Depends(get_verified_user)):
 async def fetch_url(url, key):
     try:
         headers = {"Authorization": f"Bearer {key}"}
-        proxy = aiohttp.ProxyConnector()
-        log.info("Conection set proxy connector")
-        async with aiohttp.ClientSession(connector=proxy) as session:
+        async with aiohttp.ClientSession(trust_env=True) as session:
             async with session.get(url, headers=headers) as response:
                 return await response.json()
     except Exception as e:
